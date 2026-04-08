@@ -1,0 +1,13 @@
+# 1. Ignore everything in the root directory
+/*
+
+# 2. Whitelist the .gitignore file itself (optional but recommended)
+!.gitignore
+
+# 3. Whitelist your specific files
+!/main.py
+!/third_party_apps.py
+!/riot_logic.py
+
+# 4. Whitelist the assets folder
+!/assets/
