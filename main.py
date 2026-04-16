@@ -9,8 +9,13 @@ import riot_logic
 from third_party_apps import THIRD_PARTY_APPS
 
 def resource_path(relative_path):
-    base_path = getattr(sys, "_MEIPASS", None)
-    if not base_path: base_path = os.path.abspath(".")
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
     return os.path.join(base_path, relative_path)
 
 # --- GLASS-HEX THEME COLORS ---
@@ -34,7 +39,9 @@ class RiotSwitcherApp(ctk.CTk):
         
         riot_logic.setup_profiles_folder()
         self.resource_path = resource_path("assets")
-        os.makedirs(self.resource_path, exist_ok=True)
+        
+        # REMOVED: os.makedirs(self.resource_path, exist_ok=True) 
+        # Fixed PyInstaller sys._MEIPASS permission bug!
 
         self.title("Riovert Profile Manager")
         self.geometry("1100x700") 
@@ -233,7 +240,6 @@ class RiotSwitcherApp(ctk.CTk):
         self.helper_dropdown = ctk.CTkOptionMenu(self.helper_ui_container, variable=self.selected_helper, values=list(self.helper_options.keys()), fg_color=GLASS_PANE, button_color=NEON_PURPLE, button_hover_color="#8A00E6", font=ctk.CTkFont("Segoe UI", 14, "bold"), dropdown_font=ctk.CTkFont("Segoe UI", 13), width=250, height=40, command=self.save_helper_choice)
         self.helper_dropdown.pack(side="left", padx=15)
         
-        # Changed to "Switch Helper" logic via button
         ctk.CTkButton(self.helper_ui_container, text="Switch Helper", width=120, height=40, fg_color=GLASS_PANE, border_width=1, border_color=NEON_PURPLE, hover_color=NEON_PURPLE, text_color=WHITE, font=ctk.CTkFont("Segoe UI", 12, "bold"), command=self.switch_helper).pack(side="left", padx=10)
 
         ctk.CTkButton(self.helper_ui_container, text="Terminate Helpers", width=140, height=40, fg_color="#550000", border_width=1, border_color="#AA0000", hover_color="#AA0000", text_color=WHITE, font=ctk.CTkFont("Segoe UI", 12, "bold"), command=self.terminate_helpers).pack(side="left", padx=10)
@@ -301,7 +307,7 @@ class RiotSwitcherApp(ctk.CTk):
         card = ctk.CTkFrame(self.setup_init_frame, fg_color=GLASS_PANE, corner_radius=15, border_width=1, border_color=NEON_PURPLE)
         card.pack(expand=True, anchor="center", ipadx=60, ipady=40)
 
-        ctk.CTkLabel(card, text="ADD NEW PROFILES", font=ctk.CTkFont("Segoe UI Black", 24), text_color=WHITE).pack(pady=(20, 20))
+        ctk.CTkLabel(card, text="ADD NEW PROFILES", font=ctk.CTkFont("Segoe UI Black", 24), text_color=WHITE).pack(pady=(40, 20))
         
         ctk.CTkLabel(card, text="Select Game Service:", font=ctk.CTkFont("Segoe UI", 14)).pack(pady=5)
         self.setup_service_var = ctk.StringVar(value="riot")
@@ -520,12 +526,15 @@ class RiotSwitcherApp(ctk.CTk):
         self.log_status("[LOG] TERMINATING ALL HELPER APPS...")
         riot_logic.kill_all_third_party_apps()
         self.after(2000, lambda: self.log_status("[LOG] ALL HELPER APPS TERMINATED."))
-        self.after(2000, lambda: self.log_status(f"[SYSTEM] {self.current_service.upper()} COMMAND CENTER ONLINE.")) # type: ignore
+        
+        service_name = self.current_service.upper() if self.current_service else "UNKNOWN"
+        self.after(2000, lambda: self.log_status(f"[SYSTEM] {service_name} COMMAND CENTER ONLINE."))
             
     def _relaunch_helper_finish(self, app_key, display_name):
+        service_name = self.current_service.upper() if self.current_service else "UNKNOWN"
         if riot_logic.launch_third_party_app(app_key):
             self.log_status(f"[LOG] {display_name.upper()} STARTED.")
-            self.after(2000, lambda: self.log_status(f"[SYSTEM] {self.current_service.upper()} COMMAND CENTER ONLINE.")) # type: ignore
+            self.after(2000, lambda: self.log_status(f"[SYSTEM] {service_name} COMMAND CENTER ONLINE."))
         else:
             self.log_status(f"[WARN] {display_name.upper()} NOT FOUND.")
 

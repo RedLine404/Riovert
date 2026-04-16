@@ -1,7 +1,16 @@
 # Riovert
-### Advanced Riot Games & Battle.net Profile & System Management Utility
 
-Riovert is a Python-based utility designed to streamline the management of Riot Games profiles and system-level performance. It features a custom "Hextech-Cyber" UI with Glassmorphism design elements, combining advanced system logic with a premium aesthetic.
+### High-Performance Riot Games & Battle.net Profile Orchestrator
+
+Riovert is a sophisticated profile management utility built with Python, featuring a custom **Hextech-Cyber** aesthetic and **Glassmorphism** UI. It automates the complex process of switching accounts for Riot Games and Battle.net by managing authentication tokens and system-level processes.
+
+---
+
+## 💎 Technical Showcases
+* **Stateful UI Transitions:** Custom "Glitch" overlay transitions during frame swaps for a premium, immersive feel.
+* **Orchestration Logic:** Handles graceful shutdowns (4s flush) and forced purges of game services to prevent account data corruption.
+* **Asset Bundling:** Implements `sys._MEIPASS` resource routing to ensure a portable, single-file `.exe` experience.
+* **Secure Wizard Workflow:** A multi-step setup wizard that validates account authentication state before saving to disk.
 
 ---
 
