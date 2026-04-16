@@ -59,6 +59,8 @@ Riovert is a sophisticated profile management utility built with Python, featuri
    pip install -r requirements.txt
    ```
 
+---
+
 ## 📥 For Users (Standalone)
 If you just want to use the application without setting up a Python environment, download the latest version from the Releases section. The executable is standalone and contains all necessary components.
 
