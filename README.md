@@ -49,7 +49,13 @@ Riovert is a sophisticated profile management utility built with Python, featuri
 1. Clone the repository:
    ```bash
    git clone [https://github.com/](https://github.com/)[Your-GitHub-Username]/riovert.git
+   ```
+2. Move to Riovert's directory
+   ```bash
    cd riovert
+   ```
+3. Install requirements
+   ```bash
    pip install -r requirements.txt
    ```
 
