@@ -3,6 +3,8 @@
 
 # 2. Whitelist the .gitignore file itself (optional but recommended)
 !.gitignore
+!README.md
+!requirements.txt
 
 # 3. Whitelist your specific files
 !/main.py
