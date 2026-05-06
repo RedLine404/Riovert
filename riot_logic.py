@@ -75,10 +75,7 @@ def get_encryption_key():
         except:
             pass # If decryption fails (e.g. moved to a new PC), we generate a new one
 
-    # 2. Generate a cryptographically secure random key
     new_key = Fernet.generate_key()
-    
-    # 3. Lock the key to this specific Windows User Account
     encrypted_new_key = dpapi_encrypt(new_key)
     with open(ENCRYPTION_KEY_FILE, "wb") as f:
         f.write(encrypted_new_key)
